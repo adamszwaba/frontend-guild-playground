@@ -4,19 +4,30 @@ import type { AppRouter } from "../server/router";
 import type { AppType } from "next/dist/shared/lib/utils";
 import superjson from "superjson";
 import "../styles/globals.css";
+import { getBaseUrl } from "../utils/getBaseUrl";
+import Link from "next/link";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
-  return <Component {...pageProps} />;
-};
-
-const getBaseUrl = () => {
-  if (typeof window !== "undefined") {
-    return "";
-  }
-  if (process.browser) return ""; // Browser should use current path
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
-
-  return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
+  return (
+    <>
+      <nav className="absolute top-0 left-0 w-screen p-4 bg-slate-50 shadow-sm flex justify-between align-middle">
+        <Link href="/">
+          <a>
+            <h2 className="text-[1.5rem] lg:text-[3rem] md:text-[3rem] font-extrabold text-gray-700">
+              Not a <span className="text-purple-300">totally</span> ripped App
+            </h2>
+          </a>
+        </Link>
+        <Link href={"/about"}>
+          <a className=" text-[1.5rem] lg:text-[3rem] md:text-[3rem] hover:underline">
+            About
+          </a>
+        </Link>
+      </nav>
+      <div className={`h-[104px] w-full mb-8`} />
+      <Component {...pageProps} />
+    </>
+  );
 };
 
 export default withTRPC<AppRouter>({
